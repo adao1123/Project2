@@ -1,12 +1,16 @@
 package com.example.adao1.project2;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -44,11 +48,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        DatabaseHelper db = new DatabaseHelper(this);
+        //DatabaseHelper db = new DatabaseHelper(this);
+        DatabaseHelper db = DatabaseHelper.getInstance(MainActivity.this);
+        Cursor cursor = db.getShopsList();
+        CursorAdapter cursorAdapter = new CursorAdapter() {
+            @Override
+            public View newView(Context context, Cursor cursor, ViewGroup parent) {
+                return null;
+            }
+
+            @Override
+            public void bindView(View view, Context context, Cursor cursor) {
+
+            }
+        }
         db.insert(1,"Kohls","$");
         db.insert(2,"Century Theaters","$$");
 
+        Cursor cursor = db.getShopsList();
         Shop retrievedShop = db.getShop(2);
+
         Log.d("MainTest",retrievedShop.getName());
 
 
