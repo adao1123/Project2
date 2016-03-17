@@ -16,15 +16,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "Shops.db";
     public static final String SHOP_TABLE_NAME = "SHOPS_LIST";
     public static final String COLUMN_ID = "_id";
-    public static final String NAME = "SHOP_NAME";
-    public static final String DESCRIPTION = "DESCRIPTION";
-    public static final String PRICE = "PRICE";
-    public static final String IMAGEID = "IMAGEID";
-    public static final String MAPID = "MAPID";
-    public static final String[] ALL_COLUMNS = {COLUMN_ID,NAME,DESCRIPTION,PRICE,IMAGEID,MAPID};
-    private static final String CREATE_SHOPS_TABLE = "CREATE TABLE " + SHOP_TABLE_NAME + "("
-            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME + " TEXT, " + DESCRIPTION
-            + " TEXT, " + PRICE + " TEXT, " + IMAGEID + " TEXT, " + MAPID + " TEXT )" ;
+    public static final String COLUMN_NAME = "SHOP_NAME";
+    public static final String COLUMN_DESCRIPTION = "COLUMN_DESCRIPTION";
+    public static final String COLUMN_PRICE = "COLUMN_PRICE";
+    public static final String COLUMN_IMAGEID = "COLUMN_IMAGEID";
+    public static final String COLUMN_MAPID = "COLUMN_MAPID";
+    public static final String[] ALL_COLUMNS = {COLUMN_ID, COLUMN_NAME, COLUMN_DESCRIPTION, COLUMN_PRICE, COLUMN_IMAGEID, COLUMN_MAPID};
+    private static final String CREATE_SHOPS_TABLE = "CREATE TABLE " + SHOP_TABLE_NAME
+            + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_NAME + " TEXT, "
+            + COLUMN_DESCRIPTION + " TEXT, "
+            + COLUMN_PRICE + " TEXT, "
+            + COLUMN_IMAGEID + " TEXT, "
+            + COLUMN_MAPID + " TEXT )" ;
     public static final String DROP_SHOPS_TABLE = "DROP TABLE IF EXISTS " + SHOP_TABLE_NAME;
 
     //Implement Singleton
@@ -52,13 +56,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insert(int id, String name, String year){
+    public void insert(int id, String name, String description, String price, int imageResourceID, int mapResourceID){
         SQLiteDatabase db = getWritableDatabase();  //Get a reference to the database
         ContentValues values = new ContentValues();  //create a new content value to store values
-        values.put("id",id);
-        values.put("name",name);
-        values.put("year", year);
-        db.insert("shops", null, values);  //Inser the row into the games table
+        values.put(COLUMN_ID,id);
+        values.put(COLUMN_NAME,name);
+        values.put(COLUMN_DESCRIPTION, description);
+        values.put(COLUMN_PRICE,price);
+        values.put(COLUMN_IMAGEID, Integer.valueOf(imageResourceID));
+        values.put(COLUMN_MAPID, Integer.valueOf(mapResourceID));
+        db.insert(SHOP_TABLE_NAME, null, values);  //Inser the row into the table
     }
 
 //    public Shop getShop(int id){
@@ -75,7 +82,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getShopsList(){
         SQLiteDatabase db = this.getReadableDatabase();
+
         Cursor cursor = db.query(SHOP_TABLE_NAME,ALL_COLUMNS,null,null,null,null,null,null);
+        return cursor;
+    }
+
+
+    public Cursor getShopsList(String query){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(SHOP_TABLE_NAME,
+                ALL_COLUMNS,
+                COLUMN_NAME+" LIKE ?",
+                new String[]{"%"+query+"%"},
+                null,
+                null,
+                null,
+                null);
         return cursor;
     }
 
