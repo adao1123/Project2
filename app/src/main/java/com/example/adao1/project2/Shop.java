@@ -21,21 +21,21 @@ public class Shop implements Serializable{
     private String costSigns;
     private String description;
     private ArrayList<String> tags;
-    private Image shopImage;
-    private Image directoryMap;
+    private int shopImageResourceID;
+    private int directoryMapResourceID;
 
     public Shop(String name, String costSigns) {
         this.name = name;
         this.costSigns = costSigns;
     }
 
-    public Shop(String name, String costSigns, String description, ArrayList<String> tags, Image shopImage, Image directoryMap) {
+    public Shop(String name, String description, String costSigns, int shopImageRecourseID, int directoryMapResourceID) {
         this.name = name;
         this.costSigns = costSigns;
         this.description = description;
-        this.tags = tags;
-        this.shopImage = shopImage;
-        this.directoryMap = directoryMap;
+        //this.tags = tags;
+        this.shopImageResourceID = shopImageRecourseID;
+        this.directoryMapResourceID = directoryMapResourceID;
     }
 
 
@@ -71,20 +71,20 @@ public class Shop implements Serializable{
     public void setTags(ArrayList<String> tags) {
         this.tags = tags;
     }
-
-    public Image getShopImage() {
-        return shopImage;
-    }
-
-    public void setShopImage(Image shopImage) {
-        this.shopImage = shopImage;
-    }
-
-    public Image getDirectoryMap() {
-        return directoryMap;
-    }
-
-    public void setDirectoryMap(Image directoryMap) {
-        this.directoryMap = directoryMap;
-    }
+//
+//    public Image getShopImage() {
+//        return shopImage;
+//    }
+//
+//    public void setShopImage(Image shopImage) {
+//        this.shopImage = shopImage;
+//    }
+//
+//    public Image getDirectoryMap() {
+//        return directoryMap;
+//    }
+//
+//    public void setDirectoryMap(Image directoryMap) {
+//        this.directoryMap = directoryMap;
+//    }
 }

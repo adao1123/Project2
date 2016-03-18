@@ -56,10 +56,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insert(int id, String name, String description, String price, int imageResourceID, int mapResourceID){
+    public void insert(String name, String description, String price, int imageResourceID, int mapResourceID){
         SQLiteDatabase db = getWritableDatabase();  //Get a reference to the database
         ContentValues values = new ContentValues();  //create a new content value to store values
-        values.put(COLUMN_ID,id);
+        //values.put(COLUMN_ID,id);
         values.put(COLUMN_NAME,name);
         values.put(COLUMN_DESCRIPTION, description);
         values.put(COLUMN_PRICE,price);
@@ -68,17 +68,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(SHOP_TABLE_NAME, null, values);  //Inser the row into the table
     }
 
-//    public Shop getShop(int id){
-//        SQLiteDatabase db = getReadableDatabase();  //Get a reference to the database
-//        String[] projection = ALL_COLUMNS;  //Define a projection, which tells the query to return only the columns mentioned, similar to "Select column1, column2, column3"
-//        String selection = "_id = ?"; //???????????????????????????????????????????
-//        String[] selectionArgs = new String[]{String.valueOf(id)};
-//        Cursor cursor = db.query("shops",projection,selection,selectionArgs,null,null,null,null);
-//        cursor.moveToFirst();
-//        String name = cursor.getString(cursor.getColumnIndex("name"));
-//        String year = cursor.getString(cursor.getColumnIndex("year"));
-//        return new Shop(id,name,year);
-//    }
+    public Shop getShop(int id){
+        SQLiteDatabase db = getReadableDatabase();  //Get a reference to the database
+        String[] projection = ALL_COLUMNS;  //Define a projection, which tells the query to return only the columns mentioned, similar to "Select column1, column2, column3"
+        String selection = COLUMN_ID + " = ? ";
+        String[] selectionArgs = new String[]{String.valueOf(id)};
+        Cursor cursor = db.query(SHOP_TABLE_NAME, //a.table
+                projection, //b. column names
+                selection, // c. selections
+                selectionArgs,//d. selections args
+                null,//e. group by
+                null,//f. having
+                null,//g. order by
+                null);//h. limit
+
+        cursor.moveToFirst();
+        String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+        String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+        String price = cursor.getString(cursor.getColumnIndex(COLUMN_PRICE));
+        int imageResourceID = cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGEID));
+        int mapResourceID = cursor.getInt(cursor.getColumnIndex(COLUMN_MAPID));
+        return new Shop(name,description,price,imageResourceID,mapResourceID); //temp
+    }
 
     public Cursor getShopsList(){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -88,7 +99,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getShopsList(String query){
+    public Cursor getShop(String query){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(SHOP_TABLE_NAME,

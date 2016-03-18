@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,12 +22,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String KEY = "KEY";
     EditText searchEditText;
     ListView searchListView;
     Intent detailIntent;
     ArrayList<Shop> listOfShops;
     SearchListAdapter searchListAdapter;
     CursorAdapter searchCursorAdapter;
+    DatabaseHelper db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +40,12 @@ public class MainActivity extends AppCompatActivity {
         searchListView = (ListView)findViewById(R.id.listViewID);
         detailIntent = new Intent(MainActivity.this, DetailActivity.class);
         listOfShops = new ArrayList<>();
-        addStores();
         searchListAdapter = new SearchListAdapter(MainActivity.this, listOfShops);
         searchListView.setAdapter(searchListAdapter);
 
         //DatabaseHelper db = new DatabaseHelper(this);
-        DatabaseHelper db = DatabaseHelper.getInstance(MainActivity.this);
-        Cursor cursor = db.getShopsList();
+        db = DatabaseHelper.getInstance(MainActivity.this);
+        final Cursor cursor = db.getShopsList();
         searchCursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -58,12 +61,17 @@ public class MainActivity extends AppCompatActivity {
         searchListView.setAdapter(searchCursorAdapter);
 
 
-
-        db.insert(1,"Kohls","Cheap price for cheap clothing","$",1,2);
-        db.insert(2,"Century Theatres","Pretty cool theaters","$",4,5);
-        db.insert(3,"Abercrombie Outlet","","$",4,5);
-
+        populateDatabases();
         handleIntent(getIntent());
+        searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent detailIntent = new Intent(MainActivity.this,DetailActivity.class);
+                cursor.moveToPosition(position);
+                detailIntent.putExtra(KEY,cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID)));
+                startActivity(detailIntent);
+            }
+        });
 
     }
 
@@ -84,14 +92,31 @@ public class MainActivity extends AppCompatActivity {
     private void handleIntent(Intent intent){
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Cursor cursor = DatabaseHelper.getInstance(MainActivity.this).getShopsList(query);
+            Cursor cursor = DatabaseHelper.getInstance(MainActivity.this).getShop(query);
             searchCursorAdapter.swapCursor(cursor);
             searchCursorAdapter.notifyDataSetChanged();
         }
     }
 
-    private void addStores(){
-        //listOfShops.add(new Shop("Kohls","$$","A department store for everyone for a great price", new ArrayList<String>("Clothing","dfs","df"),android.R.drawable.ic_menu_report_image,android.R.drawable.ic_dialog_map));
+    private void populateDatabases(){
+        db.insert(getString(R.string.AbercrombieName),getString(R.string.AbercromieDescription),"$$",1,2);
+        db.insert(getString(R.string.AdidasName),getString(R.string.AdidasDescription),"$$",4,5);
+        db.insert(getString(R.string.AeropostaleName),getString(R.string.AeropostaleDescription),"$",4,5);
+        db.insert(getString(R.string.AldoName),getString(R.string.AldoDescription),"$$",4,5);
+        db.insert(getString(R.string.AmericanEagleName),getString(R.string.AmericanEagleDescription),"$$",4,5);
+        db.insert(getString(R.string.AndersenBakeryName),getString(R.string.AndersenBakeryDescription),"$",4,5);
+        db.insert(getString(R.string.ArmaniExchangeName),getString(R.string.ArmaniExchangeDescription),"$",4,5);
+        db.insert(getString(R.string.AuntieAnneName),getString(R.string.AuntieAnneDescription),"$",4,5);
+        db.insert(getString(R.string.BananaRepublicName),getString(R.string.BananaRepublicDescription),"$",4,5);
+        db.insert(getString(R.string.BathBodyWorksName),getString(R.string.BathBodyWorksDescription),"$",4,5);
+        db.insert(getString(R.string.BeautyPalaceName),getString(R.string.BeautyPalaceDescription),"$",4,5);
+        db.insert(getString(R.string.BebeName),getString(R.string.BebeDescription),"$",4,5);
+        db.insert(getString(R.string.BedBathName),getString(R.string.BedBathBeyondDescription),"$",4,5);
+        db.insert(getString(R.string.BevmoName),getString(R.string.BevmoDescription),"$",4,5);
+        db.insert(getString(R.string.BoseName),getString(R.string.BoseDescription),"$",4,5);
+        db.insert(getString(R.string.BounceRamaName),getString(R.string.BounceARamaDescription),"$",4,5);
+        db.insert(getString(R.string.BurlingtonName),getString(R.string.BurlingtonDescription),"$",4,5);
+
     }
 
 }
