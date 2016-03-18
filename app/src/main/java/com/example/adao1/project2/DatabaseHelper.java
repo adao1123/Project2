@@ -94,7 +94,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getShopsList(){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(SHOP_TABLE_NAME,ALL_COLUMNS,null,null,null,null,null,null);
+        Cursor cursor = db.query(SHOP_TABLE_NAME,
+                ALL_COLUMNS,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
         return cursor;
     }
 

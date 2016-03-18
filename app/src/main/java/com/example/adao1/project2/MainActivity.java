@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     SearchListAdapter searchListAdapter;
     CursorAdapter searchCursorAdapter;
     DatabaseHelper db;
+    Cursor cursor;
 
 
     @Override
@@ -45,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
         //DatabaseHelper db = new DatabaseHelper(this);
         db = DatabaseHelper.getInstance(MainActivity.this);
-        final Cursor cursor = db.getShopsList();
+        //final Cursor cursor = db.getShopsList();
+
         searchCursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -67,7 +70,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent detailIntent = new Intent(MainActivity.this,DetailActivity.class);
+                cursor.moveToFirst();
                 cursor.moveToPosition(position);
+                Log.d("Main","column index is "+cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
+                Log.d("Main","column value is "+cursor.getInt(0));
                 detailIntent.putExtra(KEY,cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID)));
                 startActivity(detailIntent);
             }
@@ -89,12 +95,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
     }
+
     private void handleIntent(Intent intent){
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Cursor cursor = DatabaseHelper.getInstance(MainActivity.this).getShop(query);
+            cursor = DatabaseHelper.getInstance(MainActivity.this).getShop(query);
+
             searchCursorAdapter.swapCursor(cursor);
             searchCursorAdapter.notifyDataSetChanged();
+
         }
     }
 
@@ -116,6 +125,32 @@ public class MainActivity extends AppCompatActivity {
         db.insert(getString(R.string.BoseName),getString(R.string.BoseDescription),"$",4,5);
         db.insert(getString(R.string.BounceRamaName),getString(R.string.BounceARamaDescription),"$",4,5);
         db.insert(getString(R.string.BurlingtonName),getString(R.string.BurlingtonDescription),"$",4,5);
+        db.insert(getString(R.string.CajunGrillName),getString(R.string.CajunGrillDescription),"$",4,5);
+        db.insert(getString(R.string.CalvinKleinName),getString(R.string.CalvinKleinDesciption),"$",4,5);
+        db.insert(getString(R.string.CenturyTheatresName),getString(R.string.CenturyTheatresDescription),"$",4,5);
+        db.insert(getString(R.string.ChampsName),getString(R.string.ChampsDescription),"$",4,5);
+        db.insert(getString(R.string.ChipotleName),getString(R.string.ChopotleDescription),"$",4,5);
+        db.insert(getString(R.string.CinnabonName),getString(R.string.CinnabonDescription),"$",4,5);
+        db.insert(getString(R.string.ClairesName),getString(R.string.ClairesDescription),"$",4,5);
+        db.insert(getString(R.string.CoachName),getString(R.string.CoachDescription),"$",4,5);
+        db.insert(getString(R.string.ColdStoneName),getString(R.string.ColdStoneDescription),"$",4,5);
+        db.insert(getString(R.string.ColumbiaName),getString(R.string.ColumbiaDescription),"$",4,5);
+        db.insert(getString(R.string.CottonOnName),getString(R.string.CottonOnDescription),"$",4,5);
+        db.insert(getString(R.string.CrocsName),getString(R.string.CrocsDescription),"$",4,5);
+        db.insert(getString(R.string.DaveBusterName),getString(R.string.DaveBusterDecription),"$",4,5);
+        db.insert(getString(R.string.DippinDotsName),getString(R.string.DippinDotsDescription),"$",4,5);
+        db.insert(getString(R.string.DKNYName),getString(R.string.DKNYDescription),"$",4,5);
+        db.insert(getString(R.string.ExpressName),getString(R.string.ExpressDescription),"$",4,5);
+        db.insert(getString(R.string.FamousFootwearName),getString(R.string.FamousFootwearDescription),"$",4,5);
+        db.insert(getString(R.string.FinishLineName),getString(R.string.FinishLineDescription),"$",4,5);
+        db.insert(getString(R.string.FootLockerName),getString(R.string.FootLockerDescription),"$",4,5);
+        db.insert(getString(R.string.Forever21Name),getString(R.string.Forever21Description),"$",4,5);
+        db.insert(getString(R.string.GameStopName),getString(R.string.GanmeStopDescription),"$",4,5);
+        db.insert(getString(R.string.GapName),getString(R.string.GapDescription),"$",4,5);
+        db.insert(getString(R.string.GhirardelliName),getString(R.string.GhirardelliDescription),"$",4,5);
+        db.insert(getString(R.string.GNCName),getString(R.string.GNCDescription),"$",4,5);
+        db.insert(getString(R.string.HMName),getString(R.string.HMDescription),"$",4,5);
+        db.insert(getString(R.string.HollisterName),getString(R.string.HollisterDescription),"$",4,5);
 
     }
 
