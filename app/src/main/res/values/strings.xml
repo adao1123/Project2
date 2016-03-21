@@ -1,5 +1,15 @@
 <resources>
-    <string name="app_name">Project2</string>
+    <string name="app_name">Great Mall</string>
+    <string name="MensClothing">Mens Clothing</string>
+    <string name="Clothing">Clothing</string>
+    <string name="WomensClothing">Womens Clothing</string>
+    <string name="Shoe">Shoes</string>
+    <string name="Electronics">Electronics</string>
+    <string name="Entertainment">Entertainment</string>
+    <string name="Food">Food</string>
+    <string name="Jewelry">Jewelry</string>
+    <string name="Specialty">Specialty</string>
+
     <string name="AbercrombieName">Abercrombie</string>
     <string name="AdidasName">Adidas</string>
     <string name="AeropostaleName">Aeropostale</string>

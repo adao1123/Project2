@@ -14,11 +14,28 @@
         android:id="@+id/shopImageID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/shopNameID"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title"/>
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/shopNameID"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:text="Title"/>
+        <TextView
+            android:id="@+id/costID"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"/>
+        <Button
+            android:id="@+id/favButtonID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Like"/>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/descriptionID"
         android:layout_width="match_parent"

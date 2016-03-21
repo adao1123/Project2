@@ -12,7 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_alignTop="@+id/homeLayoutID">
         <EditText
             android:id="@+id/searchBarID"
             android:layout_width="wrap_content"
@@ -28,10 +29,27 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listViewID"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
-
-
+        android:layout_height="match_parent">
+        <ListView
+           android:id="@+id/listViewID"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"></ListView>
+        <LinearLayout
+            android:id="@+id/homeLayoutID"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Favorites"
+                android:textSize="20dp"/>
+            <ListView
+                android:id="@+id/favListViewID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></ListView>
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

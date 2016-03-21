@@ -23,6 +23,7 @@ public class Shop implements Serializable{
     private ArrayList<String> tags;
     private int shopImageResourceID;
     private int directoryMapResourceID;
+    private String isFav;
 
     public Shop(String name, String costSigns) {
         this.name = name;
@@ -36,9 +37,16 @@ public class Shop implements Serializable{
         //this.tags = tags;
         this.shopImageResourceID = shopImageRecourseID;
         this.directoryMapResourceID = directoryMapResourceID;
+        this.isFav = "false";
     }
 
+    public String getIsFav() {
+        return isFav;
+    }
 
+    public void setIsFav(String isFav) {
+        this.isFav = isFav;
+    }
 
     public String getName() {
         return name;
@@ -71,20 +79,20 @@ public class Shop implements Serializable{
     public void setTags(ArrayList<String> tags) {
         this.tags = tags;
     }
-//
-//    public Image getShopImage() {
-//        return shopImage;
-//    }
-//
-//    public void setShopImage(Image shopImage) {
-//        this.shopImage = shopImage;
-//    }
-//
-//    public Image getDirectoryMap() {
-//        return directoryMap;
-//    }
-//
-//    public void setDirectoryMap(Image directoryMap) {
-//        this.directoryMap = directoryMap;
-//    }
+
+    public int getShopImageResourceID() {
+        return shopImageResourceID;
+    }
+
+    public void setShopImageResourceID(int shopImageResourceID) {
+        this.shopImageResourceID = shopImageResourceID;
+    }
+
+    public int getDirectoryMapResourceID() {
+        return directoryMapResourceID;
+    }
+
+    public void setDirectoryMapResourceID(int directoryMapResourceID) {
+        this.directoryMapResourceID = directoryMapResourceID;
+    }
 }
