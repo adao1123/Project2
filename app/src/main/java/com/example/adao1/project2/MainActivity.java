@@ -1,7 +1,6 @@
 package com.example.adao1.project2;
 
 import android.app.SearchManager;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,31 +8,37 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public static final String KEY = "KEY";
     public static final String FIRST_CHECK_KEY = "FIRSTCHECKKEY";
     ListView searchListView;
     ListView favListView;
     Intent detailIntent;
     ArrayList<Shop> listOfShops;
+    String [] typesOfShops;
     Button tagSearchButton;
+    Spinner spinner;
     EditText tagSeachEditText;
     SearchListAdapter searchListAdapter;
+    ArrayAdapter<String> spinnerAdapter;
     CursorAdapter searchCursorAdapter;
     CursorAdapter favoriteCursorAdapter;
     DatabaseHelper db;
@@ -42,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean firstTime = true;
     SharedPreferences preferences;
     LinearLayout homeLayout;
-
-
+    String currentTag;
+    int currentSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +56,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         preferences = getPreferences(Context.MODE_PRIVATE);
         firstTime = preferences.getBoolean(FIRST_CHECK_KEY, true);
-        tagSeachEditText = (EditText)findViewById(R.id.searchBarID);
-        tagSearchButton = (Button)findViewById(R.id.searchButtonID);
+//        tagSeachEditText = (EditText)findViewById(R.id.searchBarID);
+//        tagSearchButton = (Button)findViewById(R.id.searchButtonID);
         searchListView = (ListView)findViewById(R.id.listViewID);
         favListView = (ListView)findViewById(R.id.favListViewID);
+        spinner = (Spinner)findViewById(R.id.spinnerID);
         homeLayout = (LinearLayout)findViewById(R.id.homeLayoutID);
         detailIntent = new Intent(MainActivity.this, DetailActivity.class);
         listOfShops = new ArrayList<>();
+        String[] typesOfShops2 = {"","All",getString(R.string.Clothing),getString(R.string.Shoe),getString(R.string.Electronics),getString(R.string.Entertainment),getString(R.string.Food),getString(R.string.Jewelry),getString(R.string.Specialty)};
+        typesOfShops = typesOfShops2;
+        spinnerAdapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_spinner_item,typesOfShops);
         searchListAdapter = new SearchListAdapter(MainActivity.this, listOfShops);
-
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(this);
         db = DatabaseHelper.getInstance(MainActivity.this);
         populateDatabases();
         favoritesCursor = db.getFavoriteShops();
@@ -92,18 +103,18 @@ public class MainActivity extends AppCompatActivity {
         favoriteCursorAdapter.swapCursor(favoritesCursor);
         favListView.setAdapter(favoriteCursorAdapter);
         handleIntent(getIntent());
-
-        tagSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchCursor = DatabaseHelper.getInstance(MainActivity.this).getShopByTag(tagSeachEditText.getText().toString());
-                homeLayout.setVisibility(View.INVISIBLE);
-                searchListView.setVisibility(View.VISIBLE);
-                searchCursorAdapter.swapCursor(searchCursor);
-                searchListView.setAdapter(searchCursorAdapter);
-                searchCursorAdapter.notifyDataSetChanged();
-            }
-        });
+//
+//        tagSearchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                searchCursor = DatabaseHelper.getInstance(MainActivity.this).getShopByTag(tagSeachEditText.getText().toString());
+//                homeLayout.setVisibility(View.INVISIBLE);
+//                searchListView.setVisibility(View.VISIBLE);
+//                searchCursorAdapter.swapCursor(searchCursor);
+//                searchListView.setAdapter(searchCursorAdapter);
+//                searchCursorAdapter.notifyDataSetChanged();
+//            }
+//        });
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -145,7 +156,10 @@ public class MainActivity extends AppCompatActivity {
     private void handleIntent(Intent intent){
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
-            searchCursor = DatabaseHelper.getInstance(MainActivity.this).getShop(query);
+            if (currentSpinner==0||currentSpinner==1)searchCursor = db.getShop(query);
+            else{
+                searchCursor = db.getShopByQueryAndTag(currentTag,query);
+            }
             homeLayout.setVisibility(View.INVISIBLE);
             searchListView.setVisibility(View.VISIBLE);
             searchCursorAdapter.swapCursor(searchCursor);
@@ -153,6 +167,25 @@ public class MainActivity extends AppCompatActivity {
             searchCursorAdapter.notifyDataSetChanged();
 
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(position==0) Log.d("Main","on item selected");
+        else if(position==1)searchCursor = db.getShopsList();
+        else searchCursor = db.getShopByTag(typesOfShops[position]);
+        currentTag = typesOfShops[position];
+        currentSpinner = position;
+        homeLayout.setVisibility(View.INVISIBLE);
+        searchListView.setVisibility(View.VISIBLE);
+        searchCursorAdapter.swapCursor(searchCursor);
+        searchListView.setAdapter(searchCursorAdapter);
+        searchCursorAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     @Override

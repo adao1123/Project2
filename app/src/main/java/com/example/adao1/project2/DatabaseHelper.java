@@ -236,7 +236,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null);
         return cursor;
     }
+    public Cursor getShopByQueryAndTag(String TAG,String QUERY){
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        Cursor cursor = db.query(TAG_TABLE_NAME,
+                new String[]{COLUMN_NAME},
+                TAG_NAME + " LIKE ?",
+                new String[]{"%" + TAG + "%"},
+                null,
+                null,
+                null,
+                null);
+        ArrayList<String> shopNames = new ArrayList<>();
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            if (cursor.getString(cursor.getColumnIndex(COLUMN_NAME)).contains(QUERY))shopNames.add(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+            cursor.moveToNext();
+        }
+        String[] shopNameArray = new String[shopNames.size()];
+        shopNameArray = shopNames.toArray(shopNameArray);
+        String selection="";
+        for (int i = 0; i < shopNameArray.length - 1; i++ ){
+            selection = selection + COLUMN_NAME + " = ? OR ";
+        }
+        selection = selection + COLUMN_NAME + " = ?";
+        cursor = db.query(SHOP_TABLE_NAME,
+                ALL_COLUMNS,
+                selection,
+                shopNameArray,
+                null,
+                null,
+                null,
+                null);
+        return cursor;
+    }
     public Cursor getReviews(String shopName){
         SQLiteDatabase db = this.getReadableDatabase();
 
