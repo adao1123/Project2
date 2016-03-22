@@ -45,4 +45,24 @@
         android:id="@+id/directoryID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/reviewNameEditTextID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"/>
+    <EditText
+        android:id="@+id/reviewEditTextID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Leave a review"/>
+    <Button
+        android:id="@+id/reviewSubmitButtonID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"/>
+    <TextView
+        android:id="@+id/reviewDisplayTextViewID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

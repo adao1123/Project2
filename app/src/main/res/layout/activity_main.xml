@@ -49,7 +49,7 @@
             <ListView
                 android:id="@+id/favListViewID"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="500dp"
                 ></ListView>
             <TextView
                 android:layout_width="match_parent"

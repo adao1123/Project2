@@ -18,19 +18,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "Shops.db";
     public static final String SHOP_TABLE_NAME = "SHOPS_LIST";
     public static final String TAG_TABLE_NAME = "TAGS_LIST";
+    public static final String REVIEW_TABLE_NAME = "REVIEW_LIST";
     public static final String SHOP_TAG_TABLE_NAME = "TAGS_LIST";
     public static final String COLUMN_ID = "_id";
     public static final String TAG_ID = "_id";
+    public static final String REVIEW_ID = "_id";
     public static final String RELATION_SHOP_ID = "shop_id";
     public static final String RELATION_TAG_ID = "tag_id";
     public static final String COLUMN_NAME = "SHOP_NAME";
     public static final String TAG_NAME = "TAG_NAME";
+    public static final String REVIEW_NAME = "REVIEW_NAME";
+    public static final String REVIEW_WRITING = "REVIEW_WRITING";
     public static final String COLUMN_DESCRIPTION = "COLUMN_DESCRIPTION";
     public static final String COLUMN_PRICE = "COLUMN_PRICE";
     public static final String COLUMN_IMAGEID = "COLUMN_IMAGEID";
     public static final String COLUMN_MAPID = "COLUMN_MAPID";
     public static final String COLUMN_ISFAV = "COLUMN_ISFAV";
     public static final String[] ALL_COLUMNS = {COLUMN_ID, COLUMN_NAME, COLUMN_DESCRIPTION, COLUMN_PRICE, COLUMN_IMAGEID, COLUMN_MAPID,COLUMN_ISFAV};
+    public static final String[] REVIEW_COLUMNS = {REVIEW_NAME,REVIEW_WRITING};
     private static final String CREATE_SHOPS_TAGS_TABLE = "CREATE TABLE " + SHOP_TAG_TABLE_NAME
             + "(" + RELATION_SHOP_ID + " INTEGER, "
             + RELATION_TAG_ID + " INTEGER, "
@@ -49,9 +54,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_IMAGEID + " TEXT, "
             + COLUMN_MAPID + " TEXT, "
             + COLUMN_ISFAV + " TEXT )" ;
+    private static final String CREATE_REVIEW_TABLE = "CREATE TABLE " + REVIEW_TABLE_NAME
+            + "(" + REVIEW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + REVIEW_NAME + " TEXT, "
+            + REVIEW_WRITING + " TEXT, "
+            + COLUMN_NAME + " TEXT )" ;
+
 
     public static final String DROP_SHOPS_TABLE = "DROP TABLE IF EXISTS " + SHOP_TABLE_NAME;
     public static final String DROP_TAGS_TABLE = "DROP TABLE IF EXISTS " + TAG_TABLE_NAME;
+    public static final String DROP_REVIEW_TABLE = "DROP TABLE IF EXISTS " + REVIEW_TABLE_NAME;
 
     //Implement Singleton
     private static DatabaseHelper instance;
@@ -71,12 +83,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_SHOPS_TABLE);
         db.execSQL(CREATE_TAGS_TABLE);
+        db.execSQL(CREATE_REVIEW_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(DROP_SHOPS_TABLE);
         db.execSQL(DROP_TAGS_TABLE);
+        db.execSQL(DROP_REVIEW_TABLE);
         onCreate(db);
     }
 
@@ -102,6 +116,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TAG_TABLE_NAME, null, values);  //Inser the row into the table
     }
 
+    public void insertReview(String name, String review, String shopName){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(REVIEW_NAME,name);
+        values.put(REVIEW_WRITING,review);
+        values.put(COLUMN_NAME,shopName);
+        db.insert(REVIEW_TABLE_NAME,null,values);
+    }
+
     public void update(int index, String name,String description,String price, int imageResourceID, int mapResourceID, String isFav){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -111,7 +134,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_IMAGEID, Integer.valueOf(imageResourceID));
         values.put(COLUMN_MAPID, Integer.valueOf(mapResourceID));
         values.put(COLUMN_ISFAV, isFav);
-        db.update(SHOP_TABLE_NAME,values, "_id = "+ index,null);
+        db.update(SHOP_TABLE_NAME, values, "_id = " + index, null);
     }
 
     public Shop getShop(int id){
@@ -212,6 +235,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,
                 null);
         return cursor;
+    }
+
+    public Cursor getReviews(String shopName){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(REVIEW_TABLE_NAME,
+                REVIEW_COLUMNS,
+                COLUMN_NAME + " LIKE ?",
+                new String[]{shopName},
+                null,
+                null,
+                null,
+                null);
+        return cursor;
+
     }
     public void delete(int id){
         SQLiteDatabase db = getWritableDatabase();
