@@ -49,7 +49,19 @@
             <ListView
                 android:id="@+id/favListViewID"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></ListView>
+                android:layout_height="150dp"
+                ></ListView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Clothing"
+                android:textSize="20dp"/>
+            <ListView
+                android:id="@+id/clothingListID"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"></ListView>
+
+
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
