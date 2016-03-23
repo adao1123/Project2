@@ -33,6 +33,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
         helper = DatabaseHelper.getInstance(DetailActivity.this);
         index = getIntent().getIntExtra(MainActivity.KEY, -1);
         clickedShop = helper.getShop(index);

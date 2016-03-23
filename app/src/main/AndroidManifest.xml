@@ -21,7 +21,10 @@
             <meta-data android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".DetailActivity"></activity>
+        <activity android:name=".DetailActivity"
+            android:theme = "@style/AppTheme.noActionBar"
+            >
+        </activity>
     </application>
 
 </manifest>

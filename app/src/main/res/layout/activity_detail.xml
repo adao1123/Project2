@@ -10,6 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.adao1.project2.DetailActivity">
 
+
     <ImageView
         android:id="@+id/shopImageID"
         android:layout_width="match_parent"
