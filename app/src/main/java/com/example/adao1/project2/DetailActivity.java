@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class DetailActivity extends AppCompatActivity {
     TextView cost;
     TextView reviewDisplayTextView;
     Button favoritesButton;
+    ImageView storelogo;
     int imageID;
     int mapID;
     int index;
@@ -45,6 +47,7 @@ public class DetailActivity extends AppCompatActivity {
         reviewNameEditText = (EditText)findViewById(R.id.reviewNameEditTextID);
         reviewSubmitButton = (Button)findViewById(R.id.reviewSubmitButtonID);
         reviewDisplayTextView = (TextView)findViewById(R.id.reviewDisplayTextViewID);
+        storelogo = (ImageView)findViewById(R.id.shopImageID);
         getReviews();
 
         reviewSubmitButton.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +61,7 @@ public class DetailActivity extends AppCompatActivity {
                 getReviews();
             }
         });
-
+        storelogo.setImageResource(clickedShop.getShopImageResourceID());
         title.setText(clickedShop.getName());
         description.setText(clickedShop.getDescription());
         cost. setText(clickedShop.getCostSigns());
@@ -99,7 +102,13 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        helper.update(index, clickedShop.getName(), clickedShop.getDescription(), clickedShop.getCostSigns(), clickedShop.getShopImageResourceID(), clickedShop.getDirectoryMapResourceID(), clickedShop.getIsFav());
+        helper.update(index,
+                clickedShop.getName(),
+                clickedShop.getDescription(),
+                clickedShop.getCostSigns(),
+                clickedShop.getShopImageResourceID(),
+                clickedShop.getDirectoryMapResourceID(),
+                clickedShop.getIsFav());
         super.onBackPressed();
     }
 }
