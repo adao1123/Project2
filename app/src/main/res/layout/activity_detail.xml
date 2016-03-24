@@ -7,69 +7,113 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:scrollbars="none"
     tools:context="com.example.adao1.project2.DetailActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
-    <ImageView
-        android:id="@+id/shopImageID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/shopNameID"
+        <ImageView
+            android:id="@+id/shopImageID"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text="Title"/>
-        <TextView
-            android:id="@+id/costID"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="3"/>
-        <Button
-            android:id="@+id/favButtonID"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Like"/>
-    </LinearLayout>
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+            <TextView
+                android:id="@+id/shopNameID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:text="Title"
+                android:textSize="30dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/costID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:textSize="20dp"/>
+            <ImageView
+                android:id="@+id/favButtonID"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/descriptionID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Description"/>
-    <ImageView
-        android:id="@+id/directoryID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/descriptionID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:paddingTop="25dp"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        <ImageView
+            android:id="@+id/directoryID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/reviewNameEditTextID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Username"/>
-    <EditText
-        android:id="@+id/reviewEditTextID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Leave a review"/>
-    <Button
-        android:id="@+id/reviewSubmitButtonID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit"/>
-    <TextView
-        android:id="@+id/reviewDisplayTextViewID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="20dp"
+            android:background="#008080" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reviews"
+            android:textSize="25sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+        <ListView
+            android:id="@+id/reviewListViewID"
+            android:layout_width="match_parent"
+            android:layout_height="193dp"
+            android:layout_weight="8.18"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"></ListView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/reviewOpenButtonID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Leave a review"
+                android:layout_marginTop="20dp"/>
+            <EditText
+                android:id="@+id/reviewNameEditTextID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Username"
+                android:visibility="invisible"/>
+            <EditText
+                android:id="@+id/reviewEditTextID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Comment"
+                android:visibility="invisible"
+                android:layout_below="@id/reviewNameEditTextID"/>
+            <Button
+                android:id="@+id/reviewSubmitButtonID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:visibility="invisible"
+                android:layout_below="@+id/reviewEditTextID"/>
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>

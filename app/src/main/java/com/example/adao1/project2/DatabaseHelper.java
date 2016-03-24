@@ -35,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_MAPID = "COLUMN_MAPID";
     public static final String COLUMN_ISFAV = "COLUMN_ISFAV";
     public static final String[] ALL_COLUMNS = {COLUMN_ID, COLUMN_NAME, COLUMN_DESCRIPTION, COLUMN_PRICE, COLUMN_IMAGEID, COLUMN_MAPID,COLUMN_ISFAV};
-    public static final String[] REVIEW_COLUMNS = {REVIEW_NAME,REVIEW_WRITING};
+    public static final String[] REVIEW_COLUMNS = {REVIEW_ID,REVIEW_NAME,REVIEW_WRITING};
     private static final String CREATE_SHOPS_TAGS_TABLE = "CREATE TABLE " + SHOP_TAG_TABLE_NAME
             + "(" + RELATION_SHOP_ID + " INTEGER, "
             + RELATION_TAG_ID + " INTEGER, "
@@ -157,7 +157,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String price = cursor.getString(cursor.getColumnIndex(COLUMN_PRICE));
         int imageResourceID = cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGEID));
         int mapResourceID = cursor.getInt(cursor.getColumnIndex(COLUMN_MAPID));
-        return new Shop(name,description,price,imageResourceID,mapResourceID); //temp
+        String isFav = cursor.getString(cursor.getColumnIndex(COLUMN_ISFAV));
+        return new Shop(name,description,price,imageResourceID,mapResourceID,isFav); //temp
+    }
+
+    public ArrayList<Shop> getShopsArrayList(int id){
+        SQLiteDatabase db = getReadableDatabase();  //Get a reference to the database
+        ArrayList<Shop> favoriteArrayList = new ArrayList<>();
+        Cursor cursor = db.query(SHOP_TABLE_NAME,
+                ALL_COLUMNS,
+                COLUMN_ISFAV+" LIKE ?",
+                new String[]{"true"},
+                null,
+                null,
+                null,
+                null);
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+            String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+            String price = cursor.getString(cursor.getColumnIndex(COLUMN_PRICE));
+            int imageResourceID = cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGEID));
+            int mapResourceID = cursor.getInt(cursor.getColumnIndex(COLUMN_MAPID));
+            String isFav = cursor.getString(cursor.getColumnIndex(COLUMN_ISFAV));
+            favoriteArrayList.add(new Shop(name,description,price,imageResourceID,mapResourceID,isFav)); //temp
+            cursor.moveToNext();
+        }
+        return favoriteArrayList;
     }
 
     public Cursor getShopsList(){

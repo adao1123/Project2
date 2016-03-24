@@ -30,14 +30,14 @@ public class Shop implements Serializable{
         this.costSigns = costSigns;
     }
 
-    public Shop(String name, String description, String costSigns, int shopImageRecourseID, int directoryMapResourceID) {
+    public Shop(String name, String description, String costSigns, int shopImageRecourseID, int directoryMapResourceID, String isFav) {
         this.name = name;
         this.costSigns = costSigns;
         this.description = description;
         //this.tags = tags;
         this.shopImageResourceID = shopImageRecourseID;
         this.directoryMapResourceID = directoryMapResourceID;
-        this.isFav = "false";
+        this.isFav = isFav;
     }
 
     public String getIsFav() {
