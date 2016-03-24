@@ -51,10 +51,10 @@
                     android:textSize="20dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"/>
-                <HorizontalScrollView
-                    android:id="@+id/favoriteHorizontalScrollViewID"
+                <it.sephiroth.android.library.widget.HListView
+                    android:id="@+id/favoriteHorizontalListViewID"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></HorizontalScrollView>
+                    android:layout_height="150dip"/>
                 <ListView
                     android:id="@+id/favListViewID"
                     android:layout_width="match_parent"

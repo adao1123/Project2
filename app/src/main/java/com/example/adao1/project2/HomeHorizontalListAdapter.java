@@ -2,6 +2,7 @@ package com.example.adao1.project2;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class HomeHorizontalListAdapter extends ArrayAdapter<Shop> {
         Shop selectedShop = shopArrayList.get(position);
         imageView.setImageResource(selectedShop.getShopImageResourceID());
         textView.setText(selectedShop.getName());
+        Log.d("Adapter",textView.getText().toString());
         return rowItem;
     }
 }

@@ -161,7 +161,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return new Shop(name,description,price,imageResourceID,mapResourceID,isFav); //temp
     }
 
-    public ArrayList<Shop> getShopsArrayList(int id){
+    public ArrayList<Shop> getFavoriteShopsArrayList(int id){
         SQLiteDatabase db = getReadableDatabase();  //Get a reference to the database
         ArrayList<Shop> favoriteArrayList = new ArrayList<>();
         Cursor cursor = db.query(SHOP_TABLE_NAME,

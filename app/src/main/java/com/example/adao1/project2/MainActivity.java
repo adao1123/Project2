@@ -16,9 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -26,6 +24,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import it.sephiroth.android.library.widget.HListView;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public static final String KEY = "KEY";
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     CursorAdapter searchCursorAdapter;
     CursorAdapter favoriteCursorAdapter;
     DatabaseHelper db;
+    HListView favoriteHlistview;
     Cursor searchCursor;
     Cursor favoritesCursor;
     private boolean firstTime = true;
@@ -64,21 +65,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         homeLayout = (LinearLayout)findViewById(R.id.homeLayoutID);
         scrollView = (ScrollView)findViewById(R.id.scrollViewID);
         detailIntent = new Intent(MainActivity.this, DetailActivity.class);
+        favoriteHlistview = (HListView)findViewById(R.id.favoriteHorizontalListViewID);
         listOfClothingShops = new ArrayList<>();
         listOfFavoriteShops = new ArrayList<>();
         String[] typesOfShops2 = {"","All",getString(R.string.Clothing),getString(R.string.Shoe),getString(R.string.Electronics),getString(R.string.Entertainment),getString(R.string.Food),getString(R.string.Jewelry),getString(R.string.Specialty)};
         typesOfShops = typesOfShops2;
-        spinnerAdapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_spinner_item,typesOfShops);
-        favoriteHorizontalListAdapter = new HomeHorizontalListAdapter(MainActivity.this, listOfFavoriteShops);
-        clothingHorizontalListAdapter = new HomeHorizontalListAdapter(MainActivity.this, listOfClothingShops);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(this);
         db = DatabaseHelper.getInstance(MainActivity.this);
         populateDatabases();
+        clothingHorizontalListAdapter = new HomeHorizontalListAdapter(MainActivity.this, listOfClothingShops);
+        setSpinner();
         favoritesCursor = db.getFavoriteShops();
-        listOfFavoriteShops = db.getShopsArrayList(0);
+        listOfFavoriteShops = db.getFavoriteShopsArrayList(0);
+        favoriteHorizontalListAdapter = new HomeHorizontalListAdapter(MainActivity.this, listOfFavoriteShops);
+
         favoriteHorizontalListAdapter.notifyDataSetChanged();
+        favoriteHlistview.setAdapter(favoriteHorizontalListAdapter);
         favoritesCursor.moveToFirst();
 
         searchCursorAdapter = new CursorAdapter(MainActivity.this, searchCursor, 0) {
@@ -189,7 +190,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         favoritesCursor = db.getFavoriteShops();
         favoriteCursorAdapter.swapCursor(favoritesCursor);
         favoriteCursorAdapter.notifyDataSetChanged();
+        favoriteHorizontalListAdapter.notifyDataSetChanged();
+
+        for (int i =0; i<listOfFavoriteShops.size();i++) {
+            Log.d("Main", listOfFavoriteShops.get(i).getName());
+        }
+
         //super.onBackPressed();
+    }
+
+    private void setSpinner(){
+        spinnerAdapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_spinner_item,typesOfShops);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     private void populateDatabases(){
