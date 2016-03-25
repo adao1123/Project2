@@ -45,10 +45,17 @@
                     android:layout_marginBottom="10dp"
                     />
                 <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#008080" />
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Favorites"
                     android:textSize="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"/>
                 <it.sephiroth.android.library.widget.HListView
@@ -56,13 +63,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="150dip"/>
                 <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#008080" />
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Clothing"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
                     android:textSize="20dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginBottom="10dp"/>
+                    />
                 <it.sephiroth.android.library.widget.HListView
                     android:id="@+id/clothingHorizontalListViewID"
                     android:layout_width="wrap_content"
@@ -71,10 +85,16 @@
                     android:divider="#FFCC00"
                     hlv_dividerWidth = "4dp" />
                 <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#008080" />
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Shoe"
                     android:textSize="20dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginBottom="10dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"/>
@@ -83,9 +103,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="150dip"/>
                 <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#008080" />
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Electronics"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
                     android:textSize="20dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"/>
@@ -94,9 +121,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="150dip"/>
                 <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#008080" />
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Entertainment"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
                     android:textSize="20dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"/>
@@ -105,9 +139,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="150dip"/>
                 <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#008080" />
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Food"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
                     android:textSize="20dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"/>
@@ -116,9 +157,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="150dip"/>
                 <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#008080" />
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/Jewelry"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
                     android:textSize="20dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"/>
@@ -127,10 +175,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="150dip"/>
                 <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#008080" />
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/Specialty"
                     android:textSize="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"/>
                 <it.sephiroth.android.library.widget.HListView

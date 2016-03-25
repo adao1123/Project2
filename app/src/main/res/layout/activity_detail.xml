@@ -38,14 +38,16 @@
                 android:gravity="center_vertical"
                 android:text="Title"
                 android:textSize="30dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="#008080"/>
             <TextView
                 android:id="@+id/costID"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:gravity="center"
-                android:textSize="20dp"/>
+                android:textSize="20dp"
+                android:textColor="#008080"/>
             <ImageView
                 android:id="@+id/favButtonID"
                 android:layout_width="40dp"
@@ -57,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Description"
-            android:paddingTop="25dp"
+            android:layout_marginTop="25dp"
             android:textSize="20sp"
             android:textStyle="italic"
             android:layout_marginLeft="10dp"
@@ -65,7 +67,12 @@
         <ImageView
             android:id="@+id/directoryID"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
 
         <TextView
             android:layout_width="fill_parent"
@@ -78,12 +85,12 @@
             android:text="Reviews"
             android:textSize="25sp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:textColor="#008080"/>
         <ListView
             android:id="@+id/reviewListViewID"
             android:layout_width="match_parent"
             android:layout_height="193dp"
-            android:layout_weight="8.18"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"></ListView>
         <RelativeLayout
@@ -94,7 +101,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Leave a review"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:textColor="#008080"/>
             <EditText
                 android:id="@+id/reviewNameEditTextID"
                 android:layout_width="match_parent"
@@ -114,6 +122,7 @@
                 android:layout_height="wrap_content"
                 android:text="Submit"
                 android:visibility="invisible"
+                android:textColor="#008080"
                 android:layout_below="@+id/reviewEditTextID"/>
         </RelativeLayout>
     </LinearLayout>

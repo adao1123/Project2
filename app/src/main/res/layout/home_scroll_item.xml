@@ -9,11 +9,13 @@
         android:orientation="vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="#545454">
+        android:background="#008080">
         <ImageView
             android:id="@+id/scrollItemImageID"
             android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"/>
         <TextView
             android:id="@+id/scrollItemTextID"
             android:layout_width="match_parent"

@@ -25,6 +25,7 @@ public class DetailActivity extends AppCompatActivity {
     private EditText reviewEditText;
     private EditText reviewNameEditText;
     private ImageView storelogo;
+    private ImageView directory;
     private ImageView favoritesButton;
     private ListView reviewListView;
     private Button reviewOpenButton;
@@ -71,10 +72,12 @@ public class DetailActivity extends AppCompatActivity {
         reviewSubmitButton = (Button)findViewById(R.id.reviewSubmitButtonID);
         reviewOpenButton = (Button)findViewById(R.id.reviewOpenButtonID);
         storelogo = (ImageView)findViewById(R.id.shopImageID);
+        directory = (ImageView)findViewById(R.id.directoryID);
         reviewListView = (ListView)findViewById(R.id.reviewListViewID);
     }
 
     private void setViews(){
+        directory.setImageResource(R.drawable.directory);
         storelogo.setImageResource(clickedShop.getShopImageResourceID());
         cost. setText(clickedShop.getCostSigns());
         title.setText(clickedShop.getName());
