@@ -92,7 +92,8 @@
             android:layout_width="match_parent"
             android:layout_height="193dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"></ListView>
+            android:layout_marginRight="20dp"
+            android:isScrollContainer="false"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
