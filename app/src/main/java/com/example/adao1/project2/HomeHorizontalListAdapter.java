@@ -17,6 +17,9 @@ import java.util.ArrayList;
 
 /**
  * Created by adao1 on 3/13/2016.
+ * Custom Adapter for horizontal listviews on Home page.
+ * Did not use since it works better with a custom cursor adapter
+ * May still need it in the future
  */
 public class HomeHorizontalListAdapter extends ArrayAdapter<Shop> {
     ArrayList<Shop> shopArrayList;
@@ -34,7 +37,6 @@ public class HomeHorizontalListAdapter extends ArrayAdapter<Shop> {
         Shop selectedShop = shopArrayList.get(position);
         imageView.setImageResource(selectedShop.getShopImageResourceID());
         textView.setText(selectedShop.getName());
-        Log.d("Adapter",textView.getText().toString());
         return rowItem;
     }
 }

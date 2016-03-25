@@ -39,15 +39,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_SHOPS_TAGS_TABLE = "CREATE TABLE " + SHOP_TAG_TABLE_NAME
             + "(" + RELATION_SHOP_ID + " INTEGER, "
             + RELATION_TAG_ID + " INTEGER, "
-            + " FOREIGN KEY("+RELATION_SHOP_ID+") REFERENCES "+SHOP_TABLE_NAME+"("+COLUMN_ID+"), "
-            + " FOREIGN KEY("+RELATION_TAG_ID+") REFERENCES "+TAG_TABLE_NAME+"("+TAG_ID+"))";
+            + " FOREIGN DETAIL_KEY("+RELATION_SHOP_ID+") REFERENCES "+SHOP_TABLE_NAME+"("+COLUMN_ID+"), "
+            + " FOREIGN DETAIL_KEY("+RELATION_TAG_ID+") REFERENCES "+TAG_TABLE_NAME+"("+TAG_ID+"))";
     private static final String CREATE_TAGS_TABLE = "CREATE TABLE " + TAG_TABLE_NAME
-            + "(" + TAG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + "(" + TAG_ID + " INTEGER PRIMARY DETAIL_KEY AUTOINCREMENT, "
             + TAG_NAME + " TEXT, "
             + COLUMN_NAME + " TEXT )" ;
 
     private static final String CREATE_SHOPS_TABLE = "CREATE TABLE " + SHOP_TABLE_NAME
-            + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + "(" + COLUMN_ID + " INTEGER PRIMARY DETAIL_KEY AUTOINCREMENT, "
             + COLUMN_NAME + " TEXT, "
             + COLUMN_DESCRIPTION + " TEXT, "
             + COLUMN_PRICE + " TEXT, "
@@ -55,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_MAPID + " TEXT, "
             + COLUMN_ISFAV + " TEXT )" ;
     private static final String CREATE_REVIEW_TABLE = "CREATE TABLE " + REVIEW_TABLE_NAME
-            + "(" + REVIEW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + "(" + REVIEW_ID + " INTEGER PRIMARY DETAIL_KEY AUTOINCREMENT, "
             + REVIEW_NAME + " TEXT, "
             + REVIEW_WRITING + " TEXT, "
             + COLUMN_NAME + " TEXT )" ;

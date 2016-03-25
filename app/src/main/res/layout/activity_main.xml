@@ -55,26 +55,88 @@
                     android:id="@+id/favoriteHorizontalListViewID"
                     android:layout_width="wrap_content"
                     android:layout_height="150dip"/>
-                <ListView
-                    android:id="@+id/favListViewID"
-                    android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    ></ListView>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Clothing"
                     android:textSize="20dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"/>
-                <ListView
-                    android:id="@+id/clothingListID"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginBottom="10dp"/>
+                <it.sephiroth.android.library.widget.HListView
+                    android:id="@+id/clothingHorizontalListViewID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dip"
+                    android:paddingTop="5dp"
+                    android:divider="#FFCC00"
+                    hlv_dividerWidth = "4dp" />
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Shoe"
+                    android:textSize="20dp"
+                    android:layout_marginBottom="10dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"></ListView>
+                    android:paddingRight="@dimen/activity_horizontal_margin"/>
+                <it.sephiroth.android.library.widget.HListView
+                    android:id="@+id/shoesHorizontalListViewID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dip"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Electronics"
+                    android:textSize="20dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"/>
+                <it.sephiroth.android.library.widget.HListView
+                    android:id="@+id/electronicsHorizontalListViewID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dip"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Entertainment"
+                    android:textSize="20dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"/>
+                <it.sephiroth.android.library.widget.HListView
+                    android:id="@+id/entertainmentHorizontalListViewID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dip"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Food"
+                    android:textSize="20dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"/>
+                <it.sephiroth.android.library.widget.HListView
+                    android:id="@+id/foodHorizontalListViewID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dip"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Jewelry"
+                    android:textSize="20dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"/>
+                <it.sephiroth.android.library.widget.HListView
+                    android:id="@+id/jewelryHorizontalListViewID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dip"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Specialty"
+                    android:textSize="20dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"/>
+                <it.sephiroth.android.library.widget.HListView
+                    android:id="@+id/specialtyHorizontalListViewID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dip"/>
 
 
             </LinearLayout>

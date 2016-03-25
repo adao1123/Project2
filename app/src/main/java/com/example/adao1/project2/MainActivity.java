@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -28,30 +29,46 @@ import java.util.ArrayList;
 import it.sephiroth.android.library.widget.HListView;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    public static final String KEY = "KEY";
+    public static final String DETAIL_KEY = "DETAIL_KEY";
     public static final String FIRST_CHECK_KEY = "FIRSTCHECKKEY";
-    ListView searchListView;
-    ListView favListView;
-    Intent detailIntent;
-    ArrayList<Shop> listOfClothingShops;
-    ArrayList<Shop> listOfFavoriteShops;
-    String [] typesOfShops;
-    Spinner spinner;
-    HomeHorizontalListAdapter favoriteHorizontalListAdapter;
-    HomeHorizontalListAdapter clothingHorizontalListAdapter;
-    ArrayAdapter<String> spinnerAdapter;
-    CursorAdapter searchCursorAdapter;
-    CursorAdapter favoriteCursorAdapter;
-    DatabaseHelper db;
-    HListView favoriteHlistview;
-    Cursor searchCursor;
-    Cursor favoritesCursor;
-    private boolean firstTime = true;
-    SharedPreferences preferences;
-    LinearLayout homeLayout;
-    ScrollView scrollView;
-    String currentTag;
-    int currentSpinner;
+    private ListView searchListView;
+    private ScrollView scrollView;
+    private Intent detailIntent;
+    private String [] typesOfShops;
+    private Spinner spinner;
+    private ArrayAdapter<String> spinnerAdapter;
+    private Cursor searchCursor;
+    private Cursor favoritesCursor;
+    private Cursor clothingCursor;
+    private Cursor shoesCursor;
+    private Cursor electronicCursor;
+    private Cursor entertainmentCursor;
+    private Cursor foodCursor;
+    private Cursor jewelryCursor;
+    private Cursor specialtyCursor;
+    private CursorAdapter searchCursorAdapter;
+    private CursorAdapter favoriteCursorAdapter;
+    private CursorAdapter clothingCursorAdapter;
+    private CursorAdapter shoesCursorAdapter;
+    private CursorAdapter electronicsCursorAdapter;
+    private CursorAdapter entertainmentCursorAdapter;
+    private CursorAdapter foodCursorAdapter;
+    private CursorAdapter jewelryCursorAdapter;
+    private CursorAdapter specialtyCursorAdapter;
+    private HListView favoriteHlistview;
+    private HListView clothingHlistview;
+    private HListView shoesHlistview;
+    private HListView electronicsHlistview;
+    private HListView entertainmentHlistview;
+    private HListView foodHlistview;
+    private HListView jewelryHlistview;
+    private HListView specialtyHlistview;
+    private DatabaseHelper db;
+    private SharedPreferences preferences;
+    private static boolean firstTime = true;
+    private static boolean justOpened = true;
+    private static String currentTag;
+    private static int currentSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,78 +76,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
         preferences = getPreferences(Context.MODE_PRIVATE);
         firstTime = preferences.getBoolean(FIRST_CHECK_KEY, true);
-        searchListView = (ListView)findViewById(R.id.listViewID);
-        favListView = (ListView)findViewById(R.id.favListViewID);
-        spinner = (Spinner)findViewById(R.id.spinnerID);
-        homeLayout = (LinearLayout)findViewById(R.id.homeLayoutID);
-        scrollView = (ScrollView)findViewById(R.id.scrollViewID);
         detailIntent = new Intent(MainActivity.this, DetailActivity.class);
-        favoriteHlistview = (HListView)findViewById(R.id.favoriteHorizontalListViewID);
-        listOfClothingShops = new ArrayList<>();
-        listOfFavoriteShops = new ArrayList<>();
-        String[] typesOfShops2 = {"","All",getString(R.string.Clothing),getString(R.string.Shoe),getString(R.string.Electronics),getString(R.string.Entertainment),getString(R.string.Food),getString(R.string.Jewelry),getString(R.string.Specialty)};
-        typesOfShops = typesOfShops2;
         db = DatabaseHelper.getInstance(MainActivity.this);
+        initViews();
         populateDatabases();
-        clothingHorizontalListAdapter = new HomeHorizontalListAdapter(MainActivity.this, listOfClothingShops);
+        getCursors();
+        setSpinnerOptions();
         setSpinner();
-        favoritesCursor = db.getFavoriteShops();
-        listOfFavoriteShops = db.getFavoriteShopsArrayList(0);
-        favoriteHorizontalListAdapter = new HomeHorizontalListAdapter(MainActivity.this, listOfFavoriteShops);
-
-        favoriteHorizontalListAdapter.notifyDataSetChanged();
-        favoriteHlistview.setAdapter(favoriteHorizontalListAdapter);
-        favoritesCursor.moveToFirst();
-
-        searchCursorAdapter = new CursorAdapter(MainActivity.this, searchCursor, 0) {
-            @Override
-            public View newView(Context context, Cursor cursor, ViewGroup parent) {
-                return LayoutInflater.from(context).inflate(R.layout.search_list_item,parent,false);
-            }
-
-            @Override
-            public void bindView(View view, Context context, Cursor cursor) {
-                TextView nameText = (TextView)view.findViewById(R.id.searchTextID);
-                nameText.setText(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NAME)));
-            }
-        };
-
-        favoriteCursorAdapter = new CursorAdapter(MainActivity.this, favoritesCursor, 0) {
-            @Override
-            public View newView(Context context, Cursor cursor, ViewGroup parent) {
-                return LayoutInflater.from(context).inflate(R.layout.search_list_item,parent,false);
-            }
-
-            @Override
-            public void bindView(View view, Context context, Cursor cursor) {
-                TextView nameText = (TextView)view.findViewById(R.id.searchTextID);
-                nameText.setText(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NAME)));
-            }
-        };
-        favoriteCursorAdapter.swapCursor(favoritesCursor);
-        favListView.setAdapter(favoriteCursorAdapter);
+        setAllCursorAdapters();
         handleIntent(getIntent());
-        searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
-                searchCursor.moveToFirst();
-                searchCursor.moveToPosition(position);
-                detailIntent.putExtra(KEY, searchCursor.getInt(searchCursor.getColumnIndex(DatabaseHelper.COLUMN_ID)));
-                startActivity(detailIntent);
-            }
-        });
-        favListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent detailIntent = new Intent(MainActivity.this,DetailActivity.class);
-                favoritesCursor.moveToFirst();
-                favoritesCursor.moveToPosition(position);
-                detailIntent.putExtra(KEY, favoritesCursor.getInt(favoritesCursor.getColumnIndex(DatabaseHelper.COLUMN_ID)));
-                startActivity(detailIntent);
-            }
-        });
-
+        setItemClickListerners();
     }
 
     @Override
@@ -148,20 +103,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         handleIntent(intent);
     }
 
-    private void handleIntent(Intent intent){
-        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            if (currentSpinner==0||currentSpinner==1)searchCursor = db.getShop(query);
-            else{
-                searchCursor = db.getShopByQueryAndTag(currentTag,query);
-            }
-            scrollView.setVisibility(View.INVISIBLE);
-            searchListView.setVisibility(View.VISIBLE);
-            searchCursorAdapter.swapCursor(searchCursor);
-            searchListView.setAdapter(searchCursorAdapter);
-            searchCursorAdapter.notifyDataSetChanged();
-
-        }
+    @Override
+    protected void onResume() {
+        favoritesCursor = db.getFavoriteShops();
+        favoritesCursor.moveToFirst();
+        favoriteCursorAdapter.swapCursor(favoritesCursor);
+        super.onResume();
     }
 
     @Override
@@ -171,8 +118,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         else searchCursor = db.getShopByTag(typesOfShops[position]);
         currentTag = typesOfShops[position];
         currentSpinner = position;
-        scrollView.setVisibility(View.INVISIBLE);
-        searchListView.setVisibility(View.VISIBLE);
+        if(!justOpened) {
+            scrollView.setVisibility(View.INVISIBLE);
+            searchListView.setVisibility(View.VISIBLE);
+        }
+        justOpened = false;
         searchCursorAdapter.swapCursor(searchCursor);
         searchListView.setAdapter(searchCursorAdapter);
         searchCursorAdapter.notifyDataSetChanged();
@@ -189,14 +139,102 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         searchListView.setVisibility(View.INVISIBLE);
         favoritesCursor = db.getFavoriteShops();
         favoriteCursorAdapter.swapCursor(favoritesCursor);
-        favoriteCursorAdapter.notifyDataSetChanged();
-        favoriteHorizontalListAdapter.notifyDataSetChanged();
+    }
 
-        for (int i =0; i<listOfFavoriteShops.size();i++) {
-            Log.d("Main", listOfFavoriteShops.get(i).getName());
+    private void initViews(){
+        searchListView = (ListView)findViewById(R.id.listViewID);
+        spinner = (Spinner)findViewById(R.id.spinnerID);
+        scrollView = (ScrollView)findViewById(R.id.scrollViewID);
+        favoriteHlistview = (HListView)findViewById(R.id.favoriteHorizontalListViewID);
+        clothingHlistview = (HListView)findViewById(R.id.clothingHorizontalListViewID);
+        shoesHlistview = (HListView)findViewById(R.id.shoesHorizontalListViewID);
+        electronicsHlistview = (HListView)findViewById(R.id.electronicsHorizontalListViewID);
+        entertainmentHlistview = (HListView)findViewById(R.id.entertainmentHorizontalListViewID);
+        foodHlistview = (HListView)findViewById(R.id.foodHorizontalListViewID);
+        jewelryHlistview = (HListView)findViewById(R.id.jewelryHorizontalListViewID);
+        specialtyHlistview = (HListView)findViewById(R.id.specialtyHorizontalListViewID);
+    }
+
+    private void getCursors(){
+        favoritesCursor = db.getFavoriteShops();
+        clothingCursor = db.getShopByTag(getString(R.string.Clothing));
+        shoesCursor = db.getShopByTag(getString(R.string.Shoe));
+        electronicCursor = db.getShopByTag(getString(R.string.Electronics));
+        entertainmentCursor = db.getShopByTag(getString(R.string.Entertainment));
+        foodCursor = db.getShopByTag(getString(R.string.Food));
+        jewelryCursor = db.getShopByTag(getString(R.string.Jewelry));
+        specialtyCursor = db.getShopByTag(getString(R.string.Specialty));
+    }
+
+    private void setSpinnerOptions(){
+        String[] typesOfShops2 = {"","All",
+                getString(R.string.Clothing),
+                getString(R.string.Shoe),
+                getString(R.string.Electronics),
+                getString(R.string.Entertainment),
+                getString(R.string.Food),
+                getString(R.string.Jewelry),
+                getString(R.string.Specialty)};
+        typesOfShops = typesOfShops2;
+    }
+
+    private void setAllCursorAdapters(){
+        searchCursorAdapter = new CursorAdapter(MainActivity.this, searchCursor, 0) {
+            @Override
+            public View newView(Context context, Cursor cursor, ViewGroup parent) {
+                return LayoutInflater.from(context).inflate(R.layout.search_list_item,parent,false);
+            }
+
+            @Override
+            public void bindView(View view, Context context, Cursor cursor) {
+                TextView nameText = (TextView)view.findViewById(R.id.searchTextID);
+                nameText.setText(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NAME)));
+            }
+        };
+        setFavoriteHorizontalCursorAdapters(favoritesCursor,favoriteHlistview);
+        setHorizontalCursorAdapters(clothingCursorAdapter,clothingCursor,clothingHlistview);
+        setHorizontalCursorAdapters(shoesCursorAdapter,shoesCursor,shoesHlistview);
+        setHorizontalCursorAdapters(electronicsCursorAdapter,electronicCursor,electronicsHlistview);
+        setHorizontalCursorAdapters(entertainmentCursorAdapter,entertainmentCursor,entertainmentHlistview);
+        setHorizontalCursorAdapters(foodCursorAdapter, foodCursor, foodHlistview);
+        setHorizontalCursorAdapters(jewelryCursorAdapter, jewelryCursor, jewelryHlistview);
+        setHorizontalCursorAdapters(specialtyCursorAdapter, specialtyCursor, specialtyHlistview);
+    }
+
+    private void setItemClickListerners(){
+        searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
+                searchCursor.moveToFirst();
+                searchCursor.moveToPosition(position);
+                detailIntent.putExtra(DETAIL_KEY, searchCursor.getInt(searchCursor.getColumnIndex(DatabaseHelper.COLUMN_ID)));
+                startActivity(detailIntent);
+            }
+        });
+        setFavoriteHorizontalListClickListener(favoriteHlistview);
+        setHorizontalListClickListener(clothingCursor, clothingHlistview);
+        setHorizontalListClickListener(shoesCursor, shoesHlistview);
+        setHorizontalListClickListener(electronicCursor, electronicsHlistview);
+        setHorizontalListClickListener(entertainmentCursor, entertainmentHlistview);
+        setHorizontalListClickListener(foodCursor, foodHlistview);
+        setHorizontalListClickListener(jewelryCursor, jewelryHlistview);
+        setHorizontalListClickListener(specialtyCursor, specialtyHlistview);
+    }
+
+    private void handleIntent(Intent intent){
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            if (currentSpinner==0||currentSpinner==1)searchCursor = db.getShop(query);
+            else{
+                searchCursor = db.getShopByQueryAndTag(currentTag,query);
+            }
+            scrollView.setVisibility(View.INVISIBLE);
+            searchListView.setVisibility(View.VISIBLE);
+            searchCursorAdapter.swapCursor(searchCursor);
+            searchListView.setAdapter(searchCursorAdapter);
+            searchCursorAdapter.notifyDataSetChanged();
         }
-
-        //super.onBackPressed();
     }
 
     private void setSpinner(){
@@ -204,6 +242,68 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(this);
+    }
+
+    private void setHorizontalCursorAdapters(CursorAdapter cursorAdapter, Cursor cursor, HListView hListView){
+        cursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
+            @Override
+            public View newView(Context context, Cursor cursor, ViewGroup parent) {
+                return LayoutInflater.from(context).inflate(R.layout.home_scroll_item,parent,false);
+            }
+
+            @Override
+            public void bindView(View view, Context context, Cursor cursor) {
+                ImageView imageView = (ImageView)view.findViewById(R.id.scrollItemImageID);
+                TextView textView = (TextView)view.findViewById(R.id.scrollItemTextID);
+                imageView.setImageResource(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_IMAGEID)));
+                textView.setText(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NAME)));
+            }
+        };
+        hListView.setAdapter(cursorAdapter);
+    }
+
+    private void setFavoriteHorizontalCursorAdapters( Cursor cursor, HListView hListView){
+        favoriteCursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
+            @Override
+            public View newView(Context context, Cursor cursor, ViewGroup parent) {
+                return LayoutInflater.from(context).inflate(R.layout.home_scroll_item,parent,false);
+            }
+
+            @Override
+            public void bindView(View view, Context context, Cursor cursor) {
+                ImageView imageView = (ImageView)view.findViewById(R.id.scrollItemImageID);
+                TextView textView = (TextView)view.findViewById(R.id.scrollItemTextID);
+                imageView.setImageResource(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_IMAGEID)));
+                textView.setText(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NAME)));
+            }
+        };
+        hListView.setAdapter(favoriteCursorAdapter);
+    }
+
+    private void setHorizontalListClickListener(final Cursor cursor, HListView hListView){
+        hListView.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> parent, View view, int position, long id) {
+                Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
+                cursor.moveToFirst();
+                cursor.moveToPosition(position);
+                detailIntent.putExtra(DETAIL_KEY, cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID)));
+                startActivity(detailIntent);
+            }
+        });
+    }
+
+    private void setFavoriteHorizontalListClickListener(HListView hListView){
+        hListView.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> parent, View view, int position, long id) {
+                Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
+                favoritesCursor.moveToFirst();
+                favoritesCursor.moveToPosition(position);
+                detailIntent.putExtra(DETAIL_KEY, favoritesCursor.getInt(favoritesCursor.getColumnIndex(DatabaseHelper.COLUMN_ID)));
+                startActivity(detailIntent);
+            }
+        });
     }
 
     private void populateDatabases(){

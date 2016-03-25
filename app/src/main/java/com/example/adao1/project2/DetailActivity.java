@@ -14,41 +14,54 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
-    TextView title;
-    TextView description;
-    TextView cost;
-    TextView reviewDisplayTextView;
-    ImageView favoritesButton;
-    Button reviewOpenButton;
-    ImageView storelogo;
-    int imageID;
-    int mapID;
-    int index;
-    EditText reviewEditText;
-    EditText reviewNameEditText;
-    DatabaseHelper helper;
-    Button reviewSubmitButton;
-    Shop clickedShop;
-    Cursor reviewCursor;
-    ArrayList<String> reviewNamesList;
-    ArrayList<String> reviewList;
-    String reviewText;
-    ListView reviewListView;
-    CursorAdapter cursorAdapter;
+    private TextView title;
+    private TextView description;
+    private TextView cost;
+    private EditText reviewEditText;
+    private EditText reviewNameEditText;
+    private ImageView storelogo;
+    private ImageView favoritesButton;
+    private ListView reviewListView;
+    private Button reviewOpenButton;
+    private Button reviewSubmitButton;
+    private Cursor reviewCursor;
+    private CursorAdapter cursorAdapter;
+    private Shop clickedShop;
+    private DatabaseHelper helper;
+    private static int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
         helper = DatabaseHelper.getInstance(DetailActivity.this);
-        index = getIntent().getIntExtra(MainActivity.KEY, -1);
+        index = getIntent().getIntExtra(MainActivity.DETAIL_KEY, -1);
         clickedShop = helper.getShop(index);
+        initViews();
+        setReviewCursorAdapter();
+        getReviews();
+        setReviewFavoriteClickListeners();
+        setViews();
+    }
+
+    @Override
+    public void onBackPressed() {
+        helper.update(index,
+                clickedShop.getName(),
+                clickedShop.getDescription(),
+                clickedShop.getCostSigns(),
+                clickedShop.getShopImageResourceID(),
+                clickedShop.getDirectoryMapResourceID(),
+                clickedShop.getIsFav());
+        super.onBackPressed();
+    }
+
+    private void initViews(){
         title = (TextView)findViewById(R.id.shopNameID);
         cost = (TextView)findViewById(R.id.costID);
         description = (TextView)findViewById(R.id.descriptionID);
@@ -59,66 +72,25 @@ public class DetailActivity extends AppCompatActivity {
         reviewOpenButton = (Button)findViewById(R.id.reviewOpenButtonID);
         storelogo = (ImageView)findViewById(R.id.shopImageID);
         reviewListView = (ListView)findViewById(R.id.reviewListViewID);
+    }
 
-
-
-        getReviews();
-
-        reviewOpenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reviewEditText.setVisibility(View.VISIBLE);
-                reviewNameEditText.setVisibility(View.VISIBLE);
-                reviewSubmitButton.setVisibility(View.VISIBLE);
-                reviewOpenButton.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        reviewSubmitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String reviewName = reviewNameEditText.getText().toString();
-                String review = reviewEditText.getText().toString();
-                helper.insertReview(reviewName, review, clickedShop.getName());
-                reviewNameEditText.setText("");
-                reviewEditText.setText("");
-                getReviews();
-                cursorAdapter.notifyDataSetChanged();
-                reviewEditText.setVisibility(View.INVISIBLE);
-                reviewNameEditText.setVisibility(View.INVISIBLE);
-                reviewSubmitButton.setVisibility(View.INVISIBLE);
-                reviewOpenButton.setVisibility(View.VISIBLE);
-            }
-        });
-
-        reviewListView.setAdapter(cursorAdapter);
+    private void setViews(){
         storelogo.setImageResource(clickedShop.getShopImageResourceID());
         cost. setText(clickedShop.getCostSigns());
         title.setText(clickedShop.getName());
         description.setText(clickedShop.getDescription());
-        Log.d("Main",clickedShop.getIsFav());
         if(clickedShop.getIsFav().equals("true")) favoritesButton.setImageResource(R.drawable.hearticon);
         else favoritesButton.setImageResource(R.drawable.heartemptyicon);
-        favoritesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(clickedShop.getIsFav().equals("false")){
-                    clickedShop.setIsFav("true");
-                    favoritesButton.setImageResource(R.drawable.hearticon);
-                }else{
-                    clickedShop.setIsFav("false");
-                    favoritesButton.setImageResource(R.drawable.heartemptyicon);
-                }
-            }
-        });
-
-
     }
 
     private void getReviews(){
         if (helper.getReviews(clickedShop.getName())==null) return;
         reviewCursor = helper.getReviews(clickedShop.getName());
         reviewCursor.moveToFirst();
+        cursorAdapter.swapCursor(reviewCursor);
+    }
+
+    private void setReviewCursorAdapter(){
         cursorAdapter = new CursorAdapter(DetailActivity.this, reviewCursor, 0) {
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -134,17 +106,50 @@ public class DetailActivity extends AppCompatActivity {
                 reviewText.setText(cursor.getString(cursor.getColumnIndex(helper.REVIEW_WRITING)));
             }
         };
+        reviewListView.setAdapter(cursorAdapter);
     }
 
-    @Override
-    public void onBackPressed() {
-        helper.update(index,
-                clickedShop.getName(),
-                clickedShop.getDescription(),
-                clickedShop.getCostSigns(),
-                clickedShop.getShopImageResourceID(),
-                clickedShop.getDirectoryMapResourceID(),
-                clickedShop.getIsFav());
-        super.onBackPressed();
+    private void setReviewFavoriteClickListeners(){
+        reviewOpenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reviewEditText.setVisibility(View.VISIBLE);
+                reviewNameEditText.setVisibility(View.VISIBLE);
+                reviewSubmitButton.setVisibility(View.VISIBLE);
+                reviewOpenButton.setVisibility(View.INVISIBLE);
+            }
+        });
+        reviewSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String reviewName = reviewNameEditText.getText().toString();
+                String review = reviewEditText.getText().toString();
+                if (reviewName.equals("") || review.equals(""))
+                    Toast.makeText(DetailActivity.this, "Enter Review", Toast.LENGTH_SHORT).show();
+                else {
+                    helper.insertReview(reviewName, review, clickedShop.getName());
+                    reviewNameEditText.setText("");
+                    reviewEditText.setText("");
+                    cursorAdapter.notifyDataSetChanged();
+                    getReviews();
+                    reviewEditText.setVisibility(View.INVISIBLE);
+                    reviewNameEditText.setVisibility(View.INVISIBLE);
+                    reviewSubmitButton.setVisibility(View.INVISIBLE);
+                    reviewOpenButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        favoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickedShop.getIsFav().equals("false")) {
+                    clickedShop.setIsFav("true");
+                    favoritesButton.setImageResource(R.drawable.hearticon);
+                } else {
+                    clickedShop.setIsFav("false");
+                    favoritesButton.setImageResource(R.drawable.heartemptyicon2);
+                }
+            }
+        });
     }
 }
