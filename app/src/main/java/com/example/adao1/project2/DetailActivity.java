@@ -50,6 +50,9 @@ public class DetailActivity extends AppCompatActivity {
         setViews();
     }
 
+    /**
+     * On back pressed to exit the details screen/activity will update the database if favorite is changed.
+     */
     @Override
     public void onBackPressed() {
         helper.update(index,
@@ -62,6 +65,9 @@ public class DetailActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    /**
+     * Initializes all of the views
+     */
     private void initViews(){
         title = (TextView)findViewById(R.id.shopNameID);
         cost = (TextView)findViewById(R.id.costID);
@@ -76,6 +82,10 @@ public class DetailActivity extends AppCompatActivity {
         reviewListView = (ListView)findViewById(R.id.reviewListViewID);
     }
 
+    /**
+     * Sets all of the data from the Shop object to the XML views
+     * Checks isFav to display the correct heart image 
+     */
     private void setViews(){
         directory.setImageResource(R.drawable.directory);
         storelogo.setImageResource(clickedShop.getShopImageResourceID());
@@ -86,6 +96,10 @@ public class DetailActivity extends AppCompatActivity {
         else favoritesButton.setImageResource(R.drawable.heartemptyicon2);
     }
 
+    /**
+     * getReviews checks if there are any reviews
+     * If there is, it will get them from the database
+     */
     private void getReviews(){
         if (helper.getReviews(clickedShop.getName())==null) return;
         reviewCursor = helper.getReviews(clickedShop.getName());
@@ -93,6 +107,10 @@ public class DetailActivity extends AppCompatActivity {
         cursorAdapter.swapCursor(reviewCursor);
     }
 
+    /**
+     * setReviewCursorAdapter sets the custom cursor adapter for the review cursor
+     * Custom adapter allows each review list item to display both username and review
+     */
     private void setReviewCursorAdapter(){
         cursorAdapter = new CursorAdapter(DetailActivity.this, reviewCursor, 0) {
             @Override
@@ -112,6 +130,11 @@ public class DetailActivity extends AppCompatActivity {
         reviewListView.setAdapter(cursorAdapter);
     }
 
+    /**
+     * Set ClickListeners for the review Open Button, review Submit Button, favorites Button
+     * Review buttons toggle visibility of the review buttons, so only one shows at once.
+     * Favorites button toggles between 2 heart images when clicked, it also sets isFav for the shop
+     */
     private void setReviewFavoriteClickListeners(){
         reviewOpenButton.setOnClickListener(new View.OnClickListener() {
             @Override
