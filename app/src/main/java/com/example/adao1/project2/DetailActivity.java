@@ -83,7 +83,7 @@ public class DetailActivity extends AppCompatActivity {
         title.setText(clickedShop.getName());
         description.setText(clickedShop.getDescription());
         if(clickedShop.getIsFav().equals("true")) favoritesButton.setImageResource(R.drawable.hearticon);
-        else favoritesButton.setImageResource(R.drawable.heartemptyicon);
+        else favoritesButton.setImageResource(R.drawable.heartemptyicon2);
     }
 
     private void getReviews(){

@@ -1,0 +1,31 @@
+Great Mall Test Cases
+
+Search
+- Clicking on a spinner item will search the database for that category of shops
+- Clicking "All" in the spinner will display all of the shops
+- Clicking the search symbol on the actionbar will allow the user to enter text
+- The database will search when the user presses enter
+- The database will return and display items to the list based on the entered query 
+- While in a specific spinner category, the query search will only return based on both category of the spinner and query entered by the user. 
+
+Spinner
+- Clicking on the spinner will display a drop down menu of different categories to search by
+- Clicking on a spinner item will run search
+
+Detail
+- If the user clicks on an item while searching, the app will take the user to a detailed screen of the item that was selected
+- If the user clicks on an item in the home screen from the horizontal lists of displayed shops, the user will be taken to the detail screen of the item. 
+
+Favorites
+- If the user clicks on the empty heart, the heart will turn to a full red heart, signalling that it is favorited. 
+- If the user clicks on the heart, the user will be toggling between whether the shop is favorited or not. 
+- If the state of the heart color will save when leaving and coming back to the same item. 
+- After favoriting an item in the detail screen, the favorites list will update in the home screen. 
+- Clicking on a favorited item in the favorite list on the home screen will bring the user to the detail page. 
+
+Review
+- If the user presses the "Leave a review" button, the button will disapear while 2 edit text boxs and a button becomes visible for the user to enter in username and review. 
+- Pressing the submit button will display the entered review in the review list.
+- Pressing the submit button will hide the 2 edit texts and submit button and show the "Leave a review" button again.
+- Upon leaving and re-entering the same shop detail page, all of the reviews will still be displayed. 
+
