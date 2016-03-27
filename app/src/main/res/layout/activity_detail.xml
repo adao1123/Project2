@@ -50,8 +50,8 @@
                 android:textColor="#008080"/>
             <ImageView
                 android:id="@+id/favButtonID"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
         </LinearLayout>
 
         <TextView

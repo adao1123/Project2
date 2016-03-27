@@ -224,6 +224,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setHorizontalListClickListener(specialtyCursor, specialtyHlistview);
     }
 
+    /**
+     * 
+     * @param intent
+     */
     private void handleIntent(Intent intent){
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
@@ -239,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    //Sets the drop down spinner
     private void setSpinner(){
         spinnerAdapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_spinner_item,typesOfShops);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -246,6 +251,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner.setOnItemSelectedListener(this);
     }
 
+    /**
+     * Sets the horizontal cursor adapter for all horizontal cursors taken in the argument
+     * @param cursorAdapter
+     * @param cursor
+     * @param hListView
+     */
     private void setHorizontalCursorAdapters(CursorAdapter cursorAdapter, Cursor cursor, HListView hListView){
         cursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
             @Override
@@ -264,6 +275,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         hListView.setAdapter(cursorAdapter);
     }
 
+    /**
+     * Sets the Horizontal cursor adapter for the favorites cursor.
+     * Allowing it to display a custom item layout
+     * @param cursor
+     * @param hListView
+     */
     private void setFavoriteHorizontalCursorAdapters( Cursor cursor, HListView hListView){
         favoriteCursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
             @Override
@@ -282,6 +299,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         hListView.setAdapter(favoriteCursorAdapter);
     }
 
+    /**
+     * Sets up the horizontal List Click listeners for all of the category Hlists
+     * It will make an intent to go to the detail activity depending on the item clicked
+     * Starts detail ACtivity
+     * @param cursor
+     * @param hListView
+     */
     private void setHorizontalListClickListener(final Cursor cursor, HListView hListView){
         hListView.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
             @Override
@@ -295,6 +319,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
     }
 
+    /**
+     * setFavoriteHorizontalLstClickListener will set the ItemClickListener for only the favorite horizontal list
+     * It will make an intent to go to the detail activity depending on the item clicked
+     * Starts detail activity sending over the id of item clicked
+     * @param hListView
+     */
     private void setFavoriteHorizontalListClickListener(HListView hListView){
         hListView.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
             @Override
@@ -308,6 +338,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
     }
 
+    /**
+     * populateDatabase() will insert all of the shop data into the shop table
+     * Also, it inserts all of the relationships between tags and shops into the tags table
+     * Checks to see if it is the first time installing this app, so it will only populate once.
+     */
     private void populateDatabases(){
         if (!firstTime) return;
         firstTime = false;
@@ -357,7 +392,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         db.insert(getString(R.string.GNCName), getString(R.string.GNCDescription), "$$", R.drawable.gnclogo, 5);
         db.insert(getString(R.string.HMName), getString(R.string.HMDescription), "$$", R.drawable.hmlogo, 5);
         db.insert(getString(R.string.HollisterName), getString(R.string.HollisterDescription), "$", R.drawable.hollisterlogo, 5);
-
         db.insertTAG(getString(R.string.Clothing), getString(R.string.AbercrombieName));
         db.insertTAG(getString(R.string.Clothing), getString(R.string.AdidasName));
         db.insertTAG(getString(R.string.Clothing), getString(R.string.AeropostaleName));

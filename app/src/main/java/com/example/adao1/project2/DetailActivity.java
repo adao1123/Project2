@@ -84,7 +84,7 @@ public class DetailActivity extends AppCompatActivity {
 
     /**
      * Sets all of the data from the Shop object to the XML views
-     * Checks isFav to display the correct heart image 
+     * Checks isFav to display the correct heart image
      */
     private void setViews(){
         directory.setImageResource(R.drawable.directory);

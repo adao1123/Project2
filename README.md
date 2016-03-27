@@ -18,5 +18,6 @@ Still like to add:
 Known bugs:
 - Review listview is not scrolling so it doesn't display more than a 5 reviews (depends on device)
 - To search with by both TAG and QUERY, the user has to search TAG first (with the drop down spinner), then search with the search bar after. If searched first then selected from drop down, then it will display all shops with the TAG(not query by name). 
+- While in home screen, changing the orientation of the screen will make the horizontal listviews invisible and the empty search list visible(therefore looking blank), pressing back will bring the home screen back. 
 
 
