@@ -94,6 +94,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Inserts a new row into the Shop Table 
+     * @param name
+     * @param description
+     * @param price
+     * @param imageResourceID
+     * @param mapResourceID
+     */
     public void insert(String name, String description, String price, int imageResourceID, int mapResourceID){
         SQLiteDatabase db = getWritableDatabase();  //Get a reference to the database
         ContentValues values = new ContentValues();  //create a new content value to store values
@@ -107,6 +115,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(SHOP_TABLE_NAME, null, values);  //Inser the row into the table
     }
 
+    /**
+     * Inserts a new row in Tag Table
+     * Stores a Tag and shopName
+     * @param tag
+     * @param shopName
+     */
     public void insertTAG(String tag, String shopName){
         SQLiteDatabase db = getWritableDatabase();  //Get a reference to the database
         ContentValues values = new ContentValues();  //create a new content value to store values
@@ -116,6 +130,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TAG_TABLE_NAME, null, values);  //Inser the row into the table
     }
 
+    /**
+     * Inserts a new row in the Reviews table
+     * Stores a Review Name, Review, and ShopName
+     * @param name
+     * @param review
+     * @param shopName
+     */
     public void insertReview(String name, String review, String shopName){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -125,6 +146,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(REVIEW_TABLE_NAME,null,values);
     }
 
+    /**
+     * Updates a row in the database with the passed arguments
+     * @param index
+     * @param name
+     * @param description
+     * @param price
+     * @param imageResourceID
+     * @param mapResourceID
+     * @param isFav
+     */
     public void update(int index, String name,String description,String price, int imageResourceID, int mapResourceID, String isFav){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -137,6 +168,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(SHOP_TABLE_NAME, values, "_id = " + index, null);
     }
 
+    /**
+     * Searches for an individual shop based on the ID
+     * Grabs data from cursor and saves it into a shop object
+     * Returns a shop object of the passed id
+     * @param id
+     * @return
+     */
     public Shop getShop(int id){
         SQLiteDatabase db = getReadableDatabase();  //Get a reference to the database
         String[] projection = ALL_COLUMNS;  //Define a projection, which tells the query to return only the columns mentioned, similar to "Select column1, column2, column3"
@@ -150,7 +188,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,//f. having
                 null,//g. order by
                 null);//h. limit
-
         cursor.moveToFirst();
         String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
         String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
@@ -161,31 +198,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return new Shop(name,description,price,imageResourceID,mapResourceID,isFav); //temp
     }
 
-    public ArrayList<Shop> getFavoriteShopsArrayList(int id){
-        SQLiteDatabase db = getReadableDatabase();  //Get a reference to the database
-        ArrayList<Shop> favoriteArrayList = new ArrayList<>();
-        Cursor cursor = db.query(SHOP_TABLE_NAME,
-                ALL_COLUMNS,
-                COLUMN_ISFAV+" LIKE ?",
-                new String[]{"true"},
-                null,
-                null,
-                null,
-                null);
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
-            String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
-            String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
-            String price = cursor.getString(cursor.getColumnIndex(COLUMN_PRICE));
-            int imageResourceID = cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGEID));
-            int mapResourceID = cursor.getInt(cursor.getColumnIndex(COLUMN_MAPID));
-            String isFav = cursor.getString(cursor.getColumnIndex(COLUMN_ISFAV));
-            favoriteArrayList.add(new Shop(name,description,price,imageResourceID,mapResourceID,isFav)); //temp
-            cursor.moveToNext();
-        }
-        return favoriteArrayList;
-    }
-
+    /**
+     * Returns cursor of list of all of the shops in the db
+     * @return
+     */
     public Cursor getShopsList(){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -200,7 +216,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-
+    /**
+     * Searches Shop table for shops with passed query
+     * Returns Cursor of list of shops
+     * @param query
+     * @return
+     */
     public Cursor getShop(String query){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -215,6 +236,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    /**
+     * Searches Shop Table for all shops where ISFAV is true
+     * Returns cursor of all favorite shops
+     * @return
+     */
     public Cursor getFavoriteShops(){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -228,6 +254,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null);
         return cursor;
     }
+
+    /**
+     * Searches Tag Table for all shop names with given tag
+     * Then searches Shop table for all rows of those shop names
+     * Returns cursor with all data of the shops with passed TAG
+     * @param TAG
+     * @return
+     */
     public Cursor getShopByTag(String TAG){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -262,6 +296,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null);
         return cursor;
     }
+
+    /**
+     * Searches Tag Table for all shops with passed TAG then searches Shop table for all rows with those shops filtered by the passed query
+     * Returns a Cursor of all the data for the shops with Tag and Query
+     * @param TAG
+     * @param QUERY
+     * @return
+     */
     public Cursor getShopByQueryAndTag(String TAG,String QUERY){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -296,6 +338,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null);
         return cursor;
     }
+
+    /**
+     * Searches review Table for reviews with shopName and returns all of the reviews, and review names
+     * @param shopName
+     * @return
+     */
     public Cursor getReviews(String shopName){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -310,6 +358,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
 
     }
+
+    /**
+     * Deletes row with passed id
+     * @param id
+     */
     public void delete(int id){
         SQLiteDatabase db = getWritableDatabase();
         String selection = "id = ?";

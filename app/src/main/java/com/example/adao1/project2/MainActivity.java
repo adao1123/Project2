@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         handleIntent(intent);
     }
 
+    //updates favorite list when resumed after exiting details activity
     @Override
     protected void onResume() {
         favoritesCursor = db.getFavoriteShops();
@@ -113,6 +114,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onResume();
     }
 
+    /**
+     * Checks on spinner item selected and assigns search Cursor based on position clicked
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if(position==0) Log.d("Main","on item selected");
@@ -135,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    //on back pressed, update favorites list
+    //switches visibility to home lists
     @Override
     public void onBackPressed() {
         scrollView.setVisibility(View.VISIBLE);
@@ -143,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         favoriteCursorAdapter.swapCursor(favoritesCursor);
     }
 
+    //initializes views
     private void initViews(){
         searchListView = (ListView)findViewById(R.id.listViewID);
         spinner = (Spinner)findViewById(R.id.spinnerID);
@@ -157,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         specialtyHlistview = (HListView)findViewById(R.id.specialtyHorizontalListViewID);
     }
 
+    //sets cursors for each list from database
     private void getCursors(){
         favoritesCursor = db.getFavoriteShops();
         clothingCursor = db.getShopByTag(getString(R.string.Clothing));
@@ -168,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         specialtyCursor = db.getShopByTag(getString(R.string.Specialty));
     }
 
+    //sets spinner options in string array
     private void setSpinnerOptions(){
         String[] typesOfShops2 = {"","All",
                 getString(R.string.Clothing),
@@ -180,6 +193,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         typesOfShops = typesOfShops2;
     }
 
+    //sets all cursor adapters for all cursors/listviews in main activity
+    //calls methods to set adapters
     private void setAllCursorAdapters(){
         searchCursorAdapter = new CursorAdapter(MainActivity.this, searchCursor, 0) {
             @Override
@@ -203,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setHorizontalCursorAdapters(specialtyCursorAdapter, specialtyCursor, specialtyHlistview);
     }
 
+    //sets the Item click listernes of all of the lists in main activity
     private void setItemClickListerners(){
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -225,7 +241,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     /**
-     * 
+     * Search bar calls getShop to search databasee with a query entered in the search bar.
+     * Searches when user presses enter
+     * Toggles visibility of lists
      * @param intent
      */
     private void handleIntent(Intent intent){
